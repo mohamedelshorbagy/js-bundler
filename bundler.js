@@ -32,7 +32,7 @@ function createAsset(filename) {
     })
 
 
-    const assetId = ID++;
+    const assetId = generateId();
 
     const { code } = transformFromAst(ast, null, {
         presets: ['env']
@@ -90,7 +90,7 @@ function bundle(graph) {
 
     graph.forEach(mod => {
         modules += `
-            ${mod.id}: [
+            ${JSON.stringify(mod.id)}: [
                 function(require, module, exports) {
                     ${mod.code}
                 },
@@ -116,7 +116,7 @@ function bundle(graph) {
                 return module.exports;
             }
 
-            require(0);
+            require('${firstId}');
         })({${modules}})
     
     `;
